@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--monitorInterval，配置为120，单位为秒。即在服务运行过程中发生了log4j2配置文件的修改，log4j2能够在monitorInterval时间后出发刷新-->
+<!--status="WARN"表示自动刷新时日志级别-->
+<Configuration status="WARN" monitorInterval="120">
+
+    <Appenders>
+
+        <!--appenders里面的两个属性，分别为name=Console和name=log（两个名字是自己起的）-->
+        <!--appenders属性统计的loggers中的root的level的值控制输出信息的严格级别，一般是info-->
+        <!--root中的AppendRef的ref写appenders中的name，在这里也就是填Console或log-->
+
+        <!--控制台输出配置-->
+        <Console name="Console" target="SYSTEM_OUT">
+            <!--控制台输出格式结构配置-->
+            <!--https://logging.apache.org/log4j/2.x/manual/layouts.html#PatternLayout-->
+            <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
+            <!--<PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss,SSS} [%t] [%c]:%L [%-5p] - %m%n"/>-->
+        </Console>
+
+        <!--这个会打印出所有的 info 以及以上级别的信息，每次大小超过size，则这个size大小的日志会自动存入按年份归档-->
+        <RollingFile name="RollingFileInfo" fileName="./logs/info/tuning-log4j2.log"
+                     filePattern="./logs/$${date:yyyy-MM}/info-%d{yyyy-MM-dd}-%i.log}">
+            <!--控制台只输出level及以上级别的信息（onMatch），其他的直接拒绝（onMismatch）-->
+            <ThresholdFilter level="info" onMatch="ACCEPT" onMismatch="DENY"/>
+            <PatternLayout pattern="[%d{HH:mm:ss:SSS}] [%p] -%l -%m%n"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy/>
+                <SizeBasedTriggeringPolicy size="200 MB"/>
+            </Policies>
+        </RollingFile>
+
+    </Appenders>
+
+    <Loggers>
+        <Root level="info">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="RollingFileInfo"/>
+        </Root>
+    </Loggers>
+</Configuration>
