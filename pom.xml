@@ -59,6 +59,8 @@
 
             <!--日志框架 beg-->
             <!--
+                    日志框架梳理：https://www.yisu.com/zixun/357250.html
+                    logbak中读取yml属性：https://www.cnblogs.com/penghq/p/13361259.html
                     JDK自带的logging -> java-util-logging -> 简称 JUL
                     apache commons-logging -> 简称JCL
                     Simple Logging Facade for Java -> 简称SLF4j，简单日志门面类
