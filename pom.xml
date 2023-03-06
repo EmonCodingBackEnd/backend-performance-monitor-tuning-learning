@@ -71,7 +71,7 @@
                     当 commons-logging.jar 被加入到 CLASSPATH之后，它会合理地猜测你想用的日志工具，然后进行自我设置，用户根本不需要做任何设置。
                     默认的 LogFactory 是按照下列的步骤去发现并决定那个日志工具将被使用的（按照顺序，寻找过程会在找到第一个工具时中止）
                     ①首先在classpath下寻找commons-logging.properties文件。如果找到，则使用其中定义的Log实现类；
-                        如果找不到，则在查找是否已定义系统环境变量org.apache.commons.logging.LogFactory，找到则使用其定义的Log实现类；
+                        如果找不到，则再查找是否已定义系统环境变量org.apache.commons.logging.LogFactory，找到则使用其定义的Log实现类；
                         org.apache.commons.logging.Log 的具体实现有如下：
                         -org.apache.commons.logging.impl.Jdk14Logger 　使用 JDK1.4 。
                         -org.apache.commons.logging.impl.Log4JLogger 　使用 Log4J 。
@@ -94,7 +94,7 @@
                 <artifactId>commons-logging</artifactId>
                 <version>${logging.version}</version>
             </dependency>
-            <!--是apache推出的日志接口，日志的具体实现依赖于实际配置，这样可以分离接口和实现。log4j-jcl时实现jcl的jar包（只是桥接，核心实现在api和core中）-->
+            <!--是apache推出的日志接口，日志的具体实现依赖于实际配置，这样可以分离接口和实现。log4j-jcl是实现jcl的jar包（只是桥接，核心实现在api和core中）-->
             <dependency>
                 <groupId>org.apache.logging.log4j</groupId>
                 <artifactId>log4j-jcl</artifactId>
@@ -116,7 +116,7 @@
                 <artifactId>log4j-1.2-api</artifactId>
                 <version>${jcl.version}</version>
             </dependency>
-            <!--Slf4j到log4j2的适配器-->
+            <!--log4j2没有直接实现slf4j，因此需要适配层 log4j-slf4j-impl 来适配实现 slf4j接口。以便使用了slf4j的框架也能使用log4j2来输出日志-->
             <dependency>
                 <groupId>org.apache.logging.log4j</groupId>
                 <artifactId>log4j-slf4j-impl</artifactId>
@@ -140,7 +140,7 @@
                 <artifactId>logback-classic</artifactId>
                 <version>${logback.version}</version>
             </dependency>
-            <!--Slf4j到log4j的适配器-->
+            <!--log4j没有直接实现slf4j，因此需要适配层slf4j-log4j12来适配实现slf4j接口。以便使用了log4j的框架也能使用slf4j输出日志-->
             <dependency>
                 <groupId>org.slf4j</groupId>
                 <artifactId>slf4j-log4j12</artifactId>
